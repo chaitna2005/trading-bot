@@ -1,43 +1,49 @@
-import typer
+import sys
 from bot.orders import place_order
-from bot.validators import validate_input
-from bot.logging_config import setup_logging
+import bot.logging_config  # initialize logging
 
-app = typer.Typer()
 
-setup_logging()
+def main():
+    args = sys.argv[1:]
 
-@app.command()
-def trade(
-    symbol: str,
-    side: str,
-    order_type: str,
-    quantity: float,
-    price: float = None
-):
-    try:
-        validate_input(symbol, side, order_type, quantity, price)
+    if len(args) < 4:
+        print("\nUsage:")
+        print("MARKET: python cli.py BTCUSDT BUY MARKET 0.001")
+        print("LIMIT : python cli.py BTCUSDT BUY LIMIT 0.001 60000\n")
+        return
 
-        print("\nOrder Request:")
-        print(f"Symbol: {symbol}")
-        print(f"Side: {side}")
-        print(f"Type: {order_type}")
-        print(f"Quantity: {quantity}")
-        if price:
-            print(f"Price: {price}")
+    symbol = args[0]
+    side = args[1]
+    order_type = args[2]
+    quantity = float(args[3])
 
-        result = place_order(symbol, side, order_type, quantity, price)
+    price = None
+    if order_type.upper() == "LIMIT":
+        if len(args) < 5:
+            print("❌ Price required for LIMIT order")
+            return
+        price = float(args[4])
 
-        print("\nResponse:")
-        print(result)
+    print("\n===== ORDER REQUEST =====")
+    print(f"Symbol   : {symbol}")
+    print(f"Side     : {side}")
+    print(f"Type     : {order_type}")
+    print(f"Quantity : {quantity}")
 
-        if "error" in result:
-            print("\nResult: Failed ❌")
-        else:
-            print("\nResult: Success ✅")
+    if price:
+        print(f"Price    : {price}")
 
-    except Exception as e:
-        print(f"\nError: {str(e)}")
+    result = place_order(symbol, side, order_type.upper(), quantity, price)
+
+    print("\n===== RESPONSE =====")
+    for key, value in result.items():
+        print(f"{key}: {value}")
+
+    if "error" in result:
+        print("\nResult: Failed ❌")
+    else:
+        print("\nResult: Success ✅")
+
 
 if __name__ == "__main__":
-    app()
+    main()

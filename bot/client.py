@@ -1,5 +1,5 @@
-from binance.client import Client
 import os
+from binance.client import Client
 from dotenv import load_dotenv
 
 load_dotenv()
@@ -10,7 +10,7 @@ def get_client():
         os.getenv("API_SECRET")
     )
 
-    # ✅ Demo Futures endpoint
-    client.FUTURES_URL = "https://demo-fapi.binance.com/fapi"
+    # 🔥 FORCE DEMO FUTURES ENDPOINT
+    client.FUTURES_URL = "https://demo-fapi.binance.com"
 
     return client
