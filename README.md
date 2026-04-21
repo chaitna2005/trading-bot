@@ -1,47 +1,97 @@
 # Trading Bot (Binance Futures Testnet)
 
-## Setup
+## 📌 Features
 
-1. Clone the repo
-2. Create virtual environment
-3. Install dependencies:
+* Place MARKET and LIMIT orders
+* CLI-based input
+* Input validation
+* Logging of requests and responses
+* Clean modular structure
 
-```
+---
+
+## 🚀 How to Run
+
+### 1. Setup
+
+Install dependencies:
+
+```bash
 pip install -r requirements.txt
 ```
 
-4. Add `.env` file:
+---
 
-```
-API_KEY=your_key
-API_SECRET=your_secret
-```
+### 2. Run Commands
 
-## Run
+#### ▶️ Market Order
 
-### Market Order
-
-```
+```bash
 python cli.py BTCUSDT BUY MARKET 0.001
 ```
 
-### Limit Order
+#### ▶️ Limit Order
+
+```bash
+python cli.py BTCUSDT BUY LIMIT 0.001 60000
+```
+
+---
+
+## 📂 Project Structure
 
 ```
-python cli.py BTCUSDT BUY LIMIT 0.001 30000
+trading_bot/
+│
+├── bot/
+│   ├── __init__.py
+│   ├── orders.py
+│   ├── validators.py
+│   ├── logging_config.py
+│
+├── logs/
+├── cli.py
+├── requirements.txt
+├── README.md
 ```
 
-## Features
+---
 
-* Place MARKET & LIMIT orders
-* CLI input validation
-* Structured project
-* Logging support
+## 📝 Notes
 
-## Note
+Due to Binance demo/testnet API inconsistencies, order execution is simulated for reliability.
+The architecture supports real API integration.
 
-Due to Binance demo/testnet API access limitations, order execution is mocked for demonstration purposes. The structure supports real API integration.
+---
 
-## Logs
+## 📄 Logs
 
-Logs are stored in `logs/app.log`
+Logs are stored in:
+
+```
+logs/trading.log
+```
+
+---
+
+## ✅ Example Output
+
+```
+===== ORDER REQUEST =====
+Symbol   : BTCUSDT
+Side     : BUY
+Type     : LIMIT
+Quantity : 0.001
+Price    : 60000.0
+
+===== RESPONSE =====
+orderId: 274739
+symbol: BTCUSDT
+status: NEW
+type: LIMIT
+side: BUY
+price: 60000.0
+origQty: 0.001
+
+Result: Success ✅
+```
